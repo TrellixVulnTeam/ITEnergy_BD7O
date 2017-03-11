@@ -24,7 +24,7 @@ SECRET_KEY = ')r9$pijztp85zrd*j0m&b$j(a68*ssenw3xoz5j+an_(v&9m5)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['iflead.pythonanywhere.com']
 
 # Application definition
 
