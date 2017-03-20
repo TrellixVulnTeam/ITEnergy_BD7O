@@ -7,14 +7,16 @@ from ITEnergy import bot
 
 class Product(models.Model):
     name = models.CharField('Название', max_length=64)
-    price = models.DecimalField('Стоимость', max_digits=6, decimal_places=2)
+    name_id = models.CharField('Название, латиницей', max_length=64, unique=True)
+    price = models.DecimalField('Стоимость', max_digits=6, decimal_places=0)
+    image = models.ImageField(upload_to='static/images/coffee_types', null=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = 'Блюдо'
-        verbose_name_plural = 'Блюда'
+        verbose_name = 'Товар'
+        verbose_name_plural = 'Товары'
 
 
 class Order(models.Model):
@@ -69,24 +71,20 @@ class Employee(models.Model):
 
 class DeliveryStaff(Employee):
     actual_order = models.OneToOneField(DeliveryOrder, null=True, blank=True)
-    __original_is_verified = False
 
-    def __init__(self, *args, **kwargs):
-        super(DeliveryStaff, self).__init__(*args, **kwargs)
-        self.__original_is_verified = self.is_verified
+    def save(self, *args, **kw):
+        if self.pk is not None:
+            orig = DeliveryStaff.objects.get(pk=self.pk)
+            if orig.is_verified != self.is_verified:
+                if self.is_verified:
+                    bot.send_message(chat_id=self.chat_id,
+                                     text='Ваш статус подтвержден')
+                else:
+                    bot.send_message(chat_id=self.chat_id,
+                                     text='Ваш статус аннулирован')
+        super(DeliveryStaff, self).save(*args, **kw)
+
 
     class Meta:
         verbose_name = 'Служба доставки'
         verbose_name_plural = 'Служба доставки'
-
-
-@receiver(post_save, sender=DeliveryStaff)
-def do_something_when_user_updated(sender, instance, created, **kwargs):
-    if not created and instance.is_verified != instance.__original_is_verified:
-        if instance.is_verified:
-            bot.send_message(chat_id=instance.chat_id,
-                             text='Ваш статус подтвержден')
-        else:
-            bot.send_message(chat_id=instance.chat_id,
-                             text='Ваш статус аннулирован')
-        pass

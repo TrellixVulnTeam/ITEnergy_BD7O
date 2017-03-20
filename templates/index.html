@@ -68,8 +68,8 @@
             </div>
         </div>
         <div class="slide" id="slide2">
-            <div class="well bs-component">{% csrf_token %}
-                <fieldset class="fields">
+            <div class="well bs-component">
+                <fieldset class="fields">{% csrf_token %}
                     <div class="shop-items">
                         <div class="container-fluid">
                             <button class="advanced-btn btn btn-default"><a href="#" class="cart-button"
@@ -77,34 +77,18 @@
                                     class="cart-button-quantity"></span> <span class="cart-button-label"></span></a>
                             </button>
                             <div class="row">
-                                <div class="col-md-3 col-sm-6">
+                                {% for product in products %}
+                                    <div class="col-md-3 col-sm-6">
                                     <div class="item"><img class="img-responsive"
-                                                           src="../static/images/coffee_types/americano.jpg" alt="">
-                                        <div class="item-dtls"><h4><a href="#">Американо</a></h4><span
-                                                class="price lblue">45 ₽</span></div>
+                                                           src="{{ product.image.url }}" alt="">
+                                        <div class="item-dtls"><h4><a href="#">{{ product.name }}</a></h4><span
+                                                class="price lblue">{{ product.price }} ₽</span></div>
                                         <div class="ecom bg-lblue"><a href="#" class="cart-buy-button btn"
-                                                                      data-name="americano" data-price="45"
+                                                                      data-name="{{ product.name_id }}" data-price="{{ product.price }}"
                                                                       data-quantity="1">Добавить в корзину</a></div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="item"><img class="img-responsive"
-                                                           src="../static/images/coffee_types/con-panna.jpg" alt="">
-                                        <div class="item-dtls"><h4><a href="#">Русиано</a></h4><span
-                                                class="price lblue">50 ₽</span></div>
-                                        <div class="ecom bg-lblue"><a href="#" class="cart-buy-button btn"
-                                                                      data-name="rusiano" data-price="50"
-                                                                      data-quantity="1">Добавить в корзину</a></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="item"><img class="img-responsive"
-                                                           src="../static/images/coffee_types/capuchino.jpg" alt="">
-                                        <div class="item-dtls"><h4><a href="#">Капучино</a></h4><span
-                                                class="price lblue">55 ₽</span></div>
-                                        <div class="ecom bg-lblue"><a class="btn" href="#">Добавить в корзину</a></div>
-                                    </div>
-                                </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>

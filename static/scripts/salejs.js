@@ -55,6 +55,22 @@
         // console.info.apply(console, args)
     }
 
+    function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = jQuery.trim(cookies[i]);
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+
     // Cross domain request.
     var server = {}
     server.send = function (method, url, data, callback) {
@@ -79,6 +95,7 @@
             callback(new Error("no response from " + url + "!"))
         }, timeout)
         debug(method, url, data)
+        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
         xhr.send(formData)
     }
     server.post = function (url, data, callback) {
@@ -373,6 +390,8 @@
         app.on('send order', bind(function () {
             if (app.contacts.isValid()) {
                 // Preparing order.
+
+
                 var order = {
                     price: this.cart.totalPrice(),
                     emailOrdersTo: this.emailOrdersTo,
@@ -390,6 +409,7 @@
                 this.cartPopupView.show(message)
 
                 // Sending order to server.
+
                 server.post(this.baseUrl + '/order', order, bind(function (err) {
                     if (err) {
                         var message = '<div class="cart"><div class="cart-message cart-message-error">'

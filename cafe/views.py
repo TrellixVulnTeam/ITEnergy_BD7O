@@ -1,10 +1,12 @@
+from datetime import datetime
 from random import randint
 
 from dateutil import parser
 from django.shortcuts import render
 
 from ITEnergy import bot
-from cafe.models import DeliveryOrder, DeliveryStaff
+from cafe.models import DeliveryOrder, DeliveryStaff, Product
+import json
 
 word = ["человека", "человека", "человек"]
 
@@ -24,7 +26,8 @@ def get_com(x, y):
 
 
 def index(request):
-    return render(request, 'index.html')
+    products = Product.objects.all()
+    return render(request, 'index.html', {'products': products})
 
 
 def reserve_place(request):
@@ -44,24 +47,24 @@ def reserve_place(request):
 
 
 def buy_coffee(request):
-    input_name = request.POST.get('inputNameTwo', '')
-    input_number = request.POST.get('inputNumberTwo', '')
-    input_address = request.POST.get('inputAdress', '')
-    coffee = request.POST.getlist('coffee_type')
-    input_date = request.POST.get('inputDateTwo', '')
-    input_time = request.POST.get('inputTimeTwo', '')
-
-    datetime = parser.parse(input_date + ' ' + input_time)
+    #{'price': 45, 'site': '127.0.0.1:8000', 'currency': '₽', 'language': 'russian', 'name': 'df', 'phone': '23', 'address': 'sdf', 'items': [{'name': 'americano', 'price': 45, 'quantity': 1}]}
+    data = request.POST.get('data', '')
+    data = json.loads(data)
+    input_name = data['name']
+    input_number = data['phone']
+    input_address = data['address']
+    coffee = data['items']
+    print(coffee)
 
     free_staff = DeliveryStaff.objects.filter(actual_order__isnull=True)
     if free_staff.count() > 0:
         random_index = randint(0, free_staff.count() - 1)
         selected_staff = free_staff[random_index]
-        order = DeliveryOrder(date_delivery=datetime.strftime("%d.%m.%Y %H:%M:%S"), address=input_address,
-                              name=input_name, tel_number=input_number)
-        order.save()
-        selected_staff.actual_order = order
-        selected_staff.save()
+        # order = DeliveryOrder(date_delivery=datetime.strftime("%d.%m.%Y %H:%M:%S"), address=input_address,
+        #                       name=input_name, tel_number=input_number)
+        # order.save()
+        # selected_staff.actual_order = order
+        # selected_staff.save()
         if len(coffee) > 1:
             bot.send_message(chat_id=selected_staff.chat_id,
                              text='{} заказал такой список товаров: {}.\nДата: {}.\nТелефон: {}.\nАдрес: {}'.format(
