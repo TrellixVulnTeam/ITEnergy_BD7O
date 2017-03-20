@@ -1,40 +1,8 @@
-﻿{% load static %}<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>coffeelab</title>
-    <meta name="author" content="Alvaro Trigo Lopez">
-    <meta name="description" content="fullPage plugin by Alvaro Trigo. Pure javascript version of full screen slider.">
-    <meta name="keywords"
-          content="fullpage,jquery,alvaro,trigo,plugin,fullscren,screen,full,iphone5,apple,pure,javascript,slider,hijacking">
-    <meta name="Resource-type" content="Document">
-    <meta name="viewport" content="width=device-width, initial-scale=0.6">
-    <link rel="stylesheet" href="{% static "bower_components/bootstrap/dist/css/darkly.css" %}">
-    <link rel="stylesheet" href="{% static "bower_components/fullpage.js/pure_javascript/javascript.fullPage.css" %}">
-    <link rel="stylesheet" href="{% static "styles/custom_style.css" %}">
-</head>
-<body>
-<div id="fullpage">
-    <div class="section typage">
-        <div class="content">
-            <div class="black-string"><h1>Спасибо!</h1><br>
-                <p>Наши сотрудники свяжутся с Вами в ближайшее время</p></div>
-            <br>
-            <ul class="pager">
-                <li><a href="/">Главная</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
-<script type="text/javascript"
-        src="{% static "bower_components/fullpage.js/pure_javascript/javascript.fullPage.min.js" %}"></script>
-<script type="text/javascript">
-    fullpage.initialize('#fullpage', {
-        anchors: ['firstPage', 'secondPage', '3rdPage', '4thpage', 'lastPage'],
-        menu: '#menu',
-        css3: true
-    });
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>coffeelab</title><meta name="author" content="Alvaro Trigo Lopez"><meta name="description" content="fullPage plugin by Alvaro Trigo. Pure javascript version of full screen slider."><meta name="keywords" content="fullpage,jquery,alvaro,trigo,plugin,fullscren,screen,full,iphone5,apple,pure,javascript,slider,hijacking"><meta name="Resource-type" content="Document"><meta name="viewport" content="width=device-width, initial-scale=0.6"><link rel="stylesheet" href="bower_components/bootstrap/dist/css/darkly.css"><link rel="stylesheet" href="bower_components/fullpage.js/pure_javascript/javascript.fullPage.css"><link rel="stylesheet" href="styles/custom_style.css"></head><body><div id="fullpage"><div class="section typage"><div class="content"><div class="black-string"><h1>Спасибо!</h1><br><p>Наши сотрудники свяжутся с Вами в ближайшее время</p></div><br><ul class="pager"><li><a href="/">Главная</a></li></ul></div></div></div><script src="bower_components/fullpage.js/pure_javascript/javascript.fullPage.min.js"></script><script type="text/javascript">
+	fullpage.initialize('#fullpage', {
+		anchors: ['firstPage', 'secondPage', '3rdPage', '4thpage', 'lastPage'],
+		menu: '#menu',
+		css3:true
+	});
 
-</script>
-</body>
-</html>
+</script></body></html>

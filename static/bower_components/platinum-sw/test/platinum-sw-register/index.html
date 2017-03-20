@@ -9,7 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 <!doctype html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
@@ -18,25 +18,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <script src="../controlled-promise.js"></script>
 
     <link rel="import" href="../../platinum-sw-register.html">
-</head>
+  </head>
 
-<body>
-<platinum-sw-register skip-waiting clients-claim auto-register></platinum-sw-register>
+  <body>
+    <platinum-sw-register skip-waiting clients-claim auto-register></platinum-sw-register>
 
-<script>
-    var sw = document.querySelector('platinum-sw-register');
+    <script>
+      var sw = document.querySelector('platinum-sw-register');
 
-    suite('Registration & Installation', function () {
-        test('creates an active service worker', function () {
-            return window._controlledPromise.then(function (registration) {
-                assert.ok(registration.active);
-            });
+      suite('Registration & Installation', function() {
+        test('creates an active service worker', function() {
+          return window._controlledPromise.then(function(registration) {
+            assert.ok(registration.active);
+          });
         });
 
-        test('state is set to "installed"', function () {
-            assert.equal(sw.state, 'installed');
+        test('state is set to "installed"', function() {
+          assert.equal(sw.state, 'installed');
         });
-    });
-</script>
-</body>
+      });
+    </script>
+  </body>
 </html>

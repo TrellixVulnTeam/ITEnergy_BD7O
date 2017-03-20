@@ -21,5 +21,5 @@ from . import views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^reserve-place', views.reserve_place, name='reserve-place'),
-    url(r'^buy-coffee', views.buy_coffee, name='reserve-place'),
+    url(r'^order', views.buy_coffee, name='reserve-place'),
 ]

@@ -1,17 +1,15 @@
-{% load static %}<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>coffeelab</title>
-    <meta name="author" content="Alvaro Trigo Lopez">
-    <meta name="description" content="fullPage plugin by Alvaro Trigo. Pure javascript version of full screen slider.">
-    <meta name="keywords"
-          content="fullpage,jquery,alvaro,trigo,plugin,fullscren,screen,full,iphone5,apple,pure,javascript,slider,hijacking">
     <meta name="Resource-type" content="Document">
-    <meta name="viewport" content="width=device-width, initial-scale=0.6">
-    <link rel="stylesheet" href="{% static "bower_components/bootstrap/dist/css/darkly.css" %}">
-    <link rel="stylesheet" href="{% static "bower_components/fullpage.js/pure_javascript/javascript.fullPage.css" %}">
-    <link rel="stylesheet" href="{% static "styles/custom_style.css" %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../static/bower_components/bootstrap/dist/css/darkly.css">
+    <link rel="stylesheet" href="../static/bower_components/fullpage.js/pure_javascript/javascript.fullPage.css">
+    <link rel="stylesheet" href="../static/styles/custom_style.css">
+    <link rel="stylesheet" href="../static/styles/bootstrap-widget.css">
+    <link rel="stylesheet" href="../static/styles/cart.css">
 </head>
 <body>
 <div id="fullpage">
@@ -32,9 +30,9 @@
         <div class="slide" id="slide2">
             <div class="well bs-component">
                 <form class="form-horizontal" action="/reserve-place/" method="post">{% csrf_token %}
-                    <fieldset>
+                    <fieldset class="fields">
                         <center>
-                            <legend>Забронировать столик</legend>
+                            <legend class="for-legend">Забронировать столик</legend>
                         </center>
                         <div class="form-group"><label for="inputName" class="col-lg-2 control-label">Имя</label>
                             <div class="col-lg-10"><input type="text" class="form-control" name="inputName"
@@ -42,14 +40,14 @@
                         </div>
                         <div class="form-group"><label for="inputNumber" class="col-lg-2 control-label">Номер
                             телефона</label>
-                            <div class="col-lg-10"><input type="tel" class="form-control" name="inputNumber"
+                            <div class="col-lg-10"><input type="number" class="form-control" name="inputNumber"
                                                           id="inputNumber" placeholder="+38 (XXX) XXX-XX-XX"
                                                           required=""></div>
                         </div>
                         <div class="form-group"><label for="inputCount" class="col-lg-2 control-label">Количество
                             человек</label>
                             <div class="col-lg-10"><input type="number" class="form-control" name="inputCount"
-                                                          id="inputCount" min="1" maxlength="2" required=""></div>
+                                                          id="inputCount" maxlength="2" required="" min="1"></div>
                         </div>
                         <div class="form-group"><label for="inputDate" class="col-lg-2 control-label">Дата</label>
                             <div class="col-lg-10"><input type="date" class="form-control" name="inputDate"
@@ -70,62 +68,53 @@
             </div>
         </div>
         <div class="slide" id="slide2">
-            <div class="well well1 bs-component">
-                <form class="form-horizontal" action="/buy-coffee/" method="post">{% csrf_token %}
-                    <fieldset>
-                        <center>
-                            <legend class="buy_food">Заказать кофе</legend>
-                        </center>
-                        <div class="form-group"><label for="inputNameTwo"
-                                                       class="col-lg-2 control-label buy_food">Имя</label>
-                            <div class="col-lg-10"><input type="text" class="form-control" name="inputNameTwo"
-                                                          id="inputNameTwo" required=""></div>
-                        </div>
-                        <div class="form-group"><label for="inputNumberTwo" class="col-lg-2 control-label buy_food">Номер
-                            телефона</label>
-                            <div class="col-lg-10"><input type="tel" class="form-control" name="inputNumberTwo"
-                                                          id="inputNumberTwo" placeholder="+38 (XXX) XXX-XX-XX"
-                                                          required=""></div>
-                        </div>
-                        <div class="form-group"><label for="inputAdress"
-                                                       class="col-lg-2 control-label buy_food">Адрес</label>
-                            <div class="col-lg-10"><input type="text" class="form-control" name="inputAdress"
-                                                          id="inputAdress" required=""></div>
-                        </div>
-                        <div class="form-group"><label for="inputDateTwo"
-                                                       class="col-lg-2 control-label buy_food">Дата</label>
-                            <div class="col-lg-10"><input type="date" class="form-control" name="inputDateTwo"
-                                                          id="inputDateTwo" required=""></div>
-                        </div>
-                        <div class="form-group"><label for="inputTimeTwo"
-                                                       class="col-lg-2 control-label buy_food">Время</label>
-                            <div class="col-lg-10"><input type="time" class="form-control" name="inputTimeTwo"
-                                                          id="inputTimeTwo" required=""></div>
-                        </div>
-                        <div class="form-group"><label for="select"
-                                                       class="col-lg-2 control-label buy_food">Товары</label>
-                            <div class="col-lg-10"><select multiple="" class="form-control" name="coffee_type"
-                                                           id="coffee_type" required="">
-                                <option value="Чай">Чай</option>
-                                <option value="Капучино">Капучино</option>
-                                <option value="Эспрессо">Эспрессо</option>
-                                <option value="Лимонад">Лимонад</option>
-                            </select></div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-lg-10 col-lg-offset-2">
-                                <button type="reset" class="btn btn-default" id="resetTwo">Отмена</button>
-                                <button type="submit" class="btn btn-primary" id="submitTwo">Подтвердить</button>
+            <div class="well bs-component">{% csrf_token %}
+                <fieldset class="fields">
+                    <div class="shop-items">
+                        <div class="container-fluid">
+                            <button class="advanced-btn btn btn-default"><a href="#" class="cart-button"
+                                                                            style="display: none;"><span
+                                    class="cart-button-quantity"></span> <span class="cart-button-label"></span></a>
+                            </button>
+                            <div class="row">
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="item"><img class="img-responsive"
+                                                           src="../static/images/coffee_types/americano.jpg" alt="">
+                                        <div class="item-dtls"><h4><a href="#">Американо</a></h4><span
+                                                class="price lblue">45 ₽</span></div>
+                                        <div class="ecom bg-lblue"><a href="#" class="cart-buy-button btn"
+                                                                      data-name="americano" data-price="45"
+                                                                      data-quantity="1">Добавить в корзину</a></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="item"><img class="img-responsive"
+                                                           src="../static/images/coffee_types/con-panna.jpg" alt="">
+                                        <div class="item-dtls"><h4><a href="#">Русиано</a></h4><span
+                                                class="price lblue">50 ₽</span></div>
+                                        <div class="ecom bg-lblue"><a href="#" class="cart-buy-button btn"
+                                                                      data-name="rusiano" data-price="50"
+                                                                      data-quantity="1">Добавить в корзину</a></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="item"><img class="img-responsive"
+                                                           src="../static/images/coffee_types/capuchino.jpg" alt="">
+                                        <div class="item-dtls"><h4><a href="#">Капучино</a></h4><span
+                                                class="price lblue">55 ₽</span></div>
+                                        <div class="ecom bg-lblue"><a class="btn" href="#">Добавить в корзину</a></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </fieldset>
-                </form>
+                    </div>
+                </fieldset>
             </div>
         </div>
     </div>
 </div>
-<script type="text/javascript"
-        src="{% static "bower_components/fullpage.js/pure_javascript/javascript.fullPage.min.js" %}"></script>
+<script src="../static/scripts/jquery.min.js"></script>
+<script src="../static/bower_components/fullpage.js/pure_javascript/javascript.fullPage.min.js"></script>
 <script type="text/javascript">
     fullpage.initialize('#fullpage', {
         anchors: ['firstPage', 'secondPage', '3rdPage', '4thpage', 'lastPage'],
@@ -134,5 +123,21 @@
     });
 
 </script>
+<script src="../static/scripts/salejs.js"></script>
+<script type="text/javascript">
+    cartjs.initialize({
+        language: 'russian', // Также доступны 'english' и 'ukrainian'.
+        currency: '₽',
+        baseUrl: ' ',
+
+        // Дополнительные опции, можно их не указывать.
+        requireName: true,      // Спрашивать имя покупателя.
+        requirePhone: true,      // Спрашивать телефон покупателя.
+        requireEmail: false,     // Спрашивать почту покупателя.
+        requireAddress: true,     // Спрашивать адрес покупателя.
+    })
+</script>
+<script src="../static/scripts/bootstrap.js"></script>
+<script src="../static/scripts/russian.js"></script>
 </body>
 </html>
