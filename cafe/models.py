@@ -31,17 +31,13 @@ class DeliveryOrder(Order):
     address = models.CharField('Адрес', max_length=128)
     date_ordered = models.DateTimeField('Дата заказа', null=False, blank=False)
 
-    def get_author_books(self):
-        cur_books = self.book_set.all()
-        books = [b.title for b in cur_books]
-        return books
-
     def __str__(self):
         return 'Для {} от {} '.format(self.name, self.date_ordered.strftime("%d.%m.%Y %H:%M:%S"))
 
     class Meta:
         verbose_name = 'Заказ на доставку'
         verbose_name_plural = 'Заказы на доставку'
+
 
 class Item(models.Model):
     order = models.ForeignKey(DeliveryOrder, on_delete=models.CASCADE)
@@ -53,9 +49,6 @@ class Item(models.Model):
         return self.quantity * self.product.price
 
     total_price = property(total_price)
-
-
-
 
 
 class ReservationOrder(Order):
