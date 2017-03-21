@@ -5,7 +5,7 @@ from dateutil import parser
 from django.shortcuts import render
 
 from ITEnergy import bot
-from cafe.models import DeliveryOrder, DeliveryStaff, Product
+from cafe.models import DeliveryOrder, DeliveryStaff, Product, Item
 import json
 
 word = ["человека", "человека", "человек"]
@@ -53,27 +53,35 @@ def buy_coffee(request):
     input_name = data['name']
     input_number = data['phone']
     input_address = data['address']
-    coffee = data['items']
-    print(coffee)
-
-    free_staff = DeliveryStaff.objects.filter(actual_order__isnull=True)
+    orders = data['items']
+    list_orders = []
+    free_staff = DeliveryStaff.objects.filter(actual_order__isnull=True, is_verified=True)
     if free_staff.count() > 0:
         random_index = randint(0, free_staff.count() - 1)
         selected_staff = free_staff[random_index]
-        # order = DeliveryOrder(date_delivery=datetime.strftime("%d.%m.%Y %H:%M:%S"), address=input_address,
-        #                       name=input_name, tel_number=input_number)
-        # order.save()
-        # selected_staff.actual_order = order
-        # selected_staff.save()
-        if len(coffee) > 1:
+        delivery_orders = DeliveryOrder(address=input_address, name=input_name, tel_number=input_number, date_ordered=datetime.now())
+        full_price = 0
+        for order in orders:
+            name = order['name']
+            quantity = order['quantity']
+            product = Product.objects.get(name_id=name)
+            item = Item(product=product, quantity=quantity, order=delivery_orders)
+            full_price += item.total_price
+            list_orders.append(str(order['quantity'])+" "+product.name)
+
+        delivery_orders.save()
+        selected_staff.actual_order = delivery_orders
+        selected_staff.save()
+
+        if len(orders) > 1:
             bot.send_message(chat_id=selected_staff.chat_id,
-                             text='{} заказал такой список товаров: {}.\nДата: {}.\nТелефон: {}.\nАдрес: {}'.format(
-                                 input_name, ', '.join(coffee), datetime.strftime("%d.%m.%Y %H:%M:%S"), input_number,
+                             text='{} заказал такой список товаров: {}.\nТелефон: {}.\nАдрес: {}'.format(
+                                 input_name, ', '.join(list_orders), input_number,
                                  input_address))
         else:
             bot.send_message(chat_id=selected_staff.chat_id,
-                             text='{} заказал {}.\nДата: {}.\nТелефон: {}.\nАдрес: {}'.format(
-                                 input_name, ', '.join(coffee), datetime.strftime("%d.%m.%Y %H:%M:%S"), input_number,
+                             text='{} заказал {}.\nТелефон: {}.\nАдрес: {}'.format(
+                                 input_name, ', '.join(list_orders), input_number,
                                  input_address))
     else:
         bot.send_message(chat_id='@coffeelab_reserv',

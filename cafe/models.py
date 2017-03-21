@@ -20,12 +20,8 @@ class Product(models.Model):
 
 
 class Order(models.Model):
-    cart = models.ManyToManyField(Product)
-    name = models.CharField('ФИО заказчика', max_length=128)
-    tel_number = models.CharField('Номер телефона', max_length=15)
-
-    # tel_number = phone_number = forms.RegexField(regex=r'^\+?1?\d{9,15}$',
-    # error_message = ("Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."))
+    name = models.CharField('Имя заказчика', max_length=128)
+    tel_number = models.CharField('Номер телефона', max_length=25)
 
     class Meta:
         abstract = True
@@ -33,14 +29,28 @@ class Order(models.Model):
 
 class DeliveryOrder(Order):
     address = models.CharField('Адрес', max_length=128)
-    date_delivery = models.DateTimeField('Дата доставки')
+    date_ordered = models.DateTimeField('Дата заказа', null=False, blank=False)
 
     def __str__(self):
-        return 'Для {} от {} '.format(self.name, self.date_delivery.strftime("%d.%m.%Y %H:%M:%S"))
+        return 'Для {} от {} '.format(self.name, self.date_ordered.strftime("%d.%m.%Y %H:%M:%S"))
 
     class Meta:
         verbose_name = 'Заказ на доставку'
         verbose_name_plural = 'Заказы на доставку'
+
+class Item(models.Model):
+    order = models.ForeignKey(DeliveryOrder, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, null=False, blank=False)
+
+    quantity = models.PositiveIntegerField('Количество')
+
+    def total_price(self):
+        return self.quantity * self.product.price
+
+    total_price = property(total_price)
+
+
+
 
 
 class ReservationOrder(Order):
@@ -83,7 +93,6 @@ class DeliveryStaff(Employee):
                     bot.send_message(chat_id=self.chat_id,
                                      text='Ваш статус аннулирован')
         super(DeliveryStaff, self).save(*args, **kw)
-
 
     class Meta:
         verbose_name = 'Служба доставки'
