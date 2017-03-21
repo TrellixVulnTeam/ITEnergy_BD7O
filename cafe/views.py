@@ -1,5 +1,6 @@
 from datetime import datetime
 from random import randint
+from django.utils import timezone
 
 from dateutil import parser
 from django.shortcuts import render
@@ -47,7 +48,7 @@ def reserve_place(request):
 
 
 def buy_coffee(request):
-    #{'price': 45, 'site': '127.0.0.1:8000', 'currency': '₽', 'language': 'russian', 'name': 'df', 'phone': '23', 'address': 'sdf', 'items': [{'name': 'americano', 'price': 45, 'quantity': 1}]}
+    # {'price': 45, 'site': '127.0.0.1:8000', 'currency': '₽', 'language': 'russian', 'name': 'df', 'phone': '23', 'address': 'sdf', 'items': [{'name': 'americano', 'price': 45, 'quantity': 1}]}
     data = request.POST.get('data', '')
     data = json.loads(data)
     input_name = data['name']
@@ -59,18 +60,18 @@ def buy_coffee(request):
     if free_staff.count() > 0:
         random_index = randint(0, free_staff.count() - 1)
         selected_staff = free_staff[random_index]
-        delivery_orders = DeliveryOrder(address=input_address, name=input_name, tel_number=input_number, date_ordered=datetime.now())
+        delivery_orders = DeliveryOrder(address=input_address, name=input_name, tel_number=input_number,
+                                        date_ordered=timezone.now())
         delivery_orders.save()
-        full_price = 0
         for order in orders:
             name = order['name']
             quantity = order['quantity']
             product = Product.objects.get(name_id=name)
             item = Item(product=product, quantity=quantity, order=delivery_orders)
-            full_price += item.total_price
-            list_orders.append(str(order['quantity'])+" "+product.name)
+            list_orders.append(str(order['quantity']) + " " + product.name)
             item.save()
 
+        delivery_orders.save()
         selected_staff.actual_order = delivery_orders
         selected_staff.save()
 

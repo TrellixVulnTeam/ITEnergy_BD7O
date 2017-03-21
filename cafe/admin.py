@@ -5,11 +5,14 @@ from .models import Product, DeliveryOrder, ReservationOrder, DeliveryStaff, Ite
 
 class ItemInline(admin.TabularInline):
     model = Item
+    readonly_fields =('price',)
 
 class DeliveryOrderAdmin(admin.ModelAdmin):
     inlines = [
         ItemInline,
     ]
+    readonly_fields = ('total_price',)
+
 
 admin.site.register(Product)
 admin.site.register(DeliveryOrder, DeliveryOrderAdmin)
